@@ -1,6 +1,6 @@
 import App from "./app";
-import UserRoute from "./routes/user.route";
+import AuthController from "./controllers/auth.controller";
 
-const app = new App([new UserRoute()]);
+const app = new App([new AuthController()]);
 
 app.listen();

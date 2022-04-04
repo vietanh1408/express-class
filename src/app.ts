@@ -1,11 +1,11 @@
-import { createConnection } from "typeorm";
-import express from "express";
-import { Controller } from "interfaces/controller.interface";
 import bodyParser from "body-parser";
 import cors from "cors";
+import express from "express";
+import { Controller } from "interfaces/controller.interface";
+import "reflect-metadata";
+import { createConnection } from "typeorm";
 import { environments } from "./constants/environments";
 import { User } from "./entities/User.entity";
-import "reflect-metadata";
 
 class App {
   public app: express.Application;
@@ -23,7 +23,7 @@ class App {
       database: "auth-tutorial",
       username: environments.DATABASE_USERNAME,
       password: environments.DATABASE_PASSWORD,
-      logging: true,
+      logging: false,
       synchronize: true,
       entities: [User],
     });
