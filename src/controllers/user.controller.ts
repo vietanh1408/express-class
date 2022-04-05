@@ -1,32 +1,29 @@
-import { Request, Response } from "express";
-import { LoginInput, RegisterInput } from "../interfaces/auth.interface";
+import { NextFunction, Request, Response, Router } from "express";
+import { Controller } from "../interfaces/controller.interface";
 import { UserService } from "../services/User.service";
-export class UserController {
+
+class UserController implements Controller {
+  public path: string = "/users";
+  public router = Router();
   public userService = new UserService();
 
-  public async getAllUsers(req: Request, res: Response) {
-    console.log("get all user...");
+  constructor() {
+    this.mapRoutes();
   }
 
-  public async getUserById(req: Request, res: Response) {
-    console.log("get user by id...");
+  private mapRoutes() {
+    this.router.get(this.path, this.getAll);
+    this.router.get(`${this.path}/:id`, this.getOne);
   }
 
-  public async register(
-    req: Request,
-    res: Response
-  ): Promise<Response | undefined> {
-    const { username, password } = req.body as RegisterInput;
-    console.log("username: ", username);
-    console.log("password: ", password);
-    return await this.userService.register({ username, password }, res);
-  }
+  public getAll = async (req: Request, res: Response, next: NextFunction) => {
+    return await this.userService.getAll(req.body, res, next);
+  };
 
-  public async login(
-    req: Request,
-    res: Response
-  ): Promise<Response | undefined> {
-    const { username, password } = req.body as LoginInput;
-    return await this.userService.login({ username, password }, res);
-  }
+  public getOne = async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
+    return await this.userService.getOne(id, res, next);
+  };
 }
+
+export default UserController;

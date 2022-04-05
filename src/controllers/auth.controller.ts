@@ -1,10 +1,10 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { LoginInput, RegisterInput } from "interfaces/auth.interface";
 import { Controller } from "../interfaces/controller.interface";
 import { UserService } from "../services/User.service";
 
 class AuthController implements Controller {
-  public path: string = "/api";
+  public path: string = "/auth";
   public router = Router();
   public userService = new UserService();
 
@@ -19,10 +19,11 @@ class AuthController implements Controller {
 
   private register = async (
     req: Request,
-    res: Response
-  ): Promise<Response | undefined> => {
+    res: Response,
+    next: NextFunction
+  ) => {
     const { username, password } = req.body as RegisterInput;
-    return await this.userService.register({ username, password }, res);
+    return await this.userService.register({ username, password }, res, next);
   };
 
   private login = async (

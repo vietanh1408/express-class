@@ -1,5 +1,5 @@
 import argon2 from "argon2";
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import { createToken } from "../utils/auth";
 import { errorMessages } from "../constants/errorMessages";
 import { User } from "../entities/User.entity";
@@ -10,13 +10,14 @@ import {
   RegisterInput,
   RegisterResponse,
 } from "../interfaces/auth.interface";
+import { UserFilter } from "interfaces/user.interface";
 
 export class UserService {
   public async register(
     input: RegisterInput,
-    res: Response
-  ): Promise<Response | undefined> {
-    console.log("1..........");
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { username, password } = input;
 
@@ -26,10 +27,8 @@ export class UserService {
         },
       });
 
-      console.log("run........................");
-
       if (exitedUser) {
-        new HttpException(404, errorMessages.exitedUser);
+        next(new HttpException(404, errorMessages.exitedUser));
       }
 
       const hashedPassword = await argon2.hash(password);
@@ -89,6 +88,44 @@ export class UserService {
       });
     } catch (error) {
       new ServerErrorException();
+    }
+  }
+
+  public async getAll(filter: UserFilter, res: Response, next: NextFunction) {
+    try {
+      const users = await User.find({});
+      const userWithoutPassword = users.map((user) => {
+        const { password, ...rest } = user;
+        return rest;
+      });
+
+      return res.status(200).json({
+        success: true,
+        users: userWithoutPassword,
+      });
+    } catch (error) {
+      next(new ServerErrorException());
+    }
+  }
+
+  public async getOne(id: string, res: Response, next: NextFunction) {
+    try {
+      const user = await User.findOneBy({
+        id,
+      });
+
+      if (!user) {
+        next(new HttpException(404, errorMessages.notFoundUser));
+      }
+
+      const { password, ...rest } = user as User;
+
+      return res.status(200).json({
+        success: true,
+        user: rest,
+      });
+    } catch (error) {
+      next(new ServerErrorException());
     }
   }
 }
