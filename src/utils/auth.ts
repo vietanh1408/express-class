@@ -1,4 +1,4 @@
-import { User } from "../modules/user/user.entity";
+import { User } from "../entities/user.entity";
 import { Secret, sign } from "jsonwebtoken";
 
 export const createToken = (

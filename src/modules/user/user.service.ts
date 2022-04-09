@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { UserFilter } from "interfaces/user.interface";
-import { UserRepository } from "../repositories/User.repository";
-import { errorMessages } from "../constants";
-import { User } from "../modules/user/user.entity";
-import HttpException from "../exceptions/Http.exception";
-import ServerErrorException from "../exceptions/ServerError.exception";
+import { UserRepository } from "./user.repository";
+import { errorMessages } from "../../constants";
+import { User } from "../../entities/user.entity";
+import HttpException from "../../exceptions/Http.exception";
+import ServerErrorException from "../../exceptions/ServerError.exception";
 
 export class UserService {
   private userRepo = new UserRepository();

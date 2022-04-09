@@ -2,7 +2,7 @@ import argon2 from "argon2";
 import { NextFunction, Response } from "express";
 import { LoginInput, RegisterInput } from "interfaces/auth.interface";
 import { errorMessages, RoleEnum } from "../../constants";
-import { User } from "../user/user.entity";
+import { User } from "../../entities/user.entity";
 import HttpException from "../../exceptions/Http.exception";
 import ServerErrorException from "../../exceptions/ServerError.exception";
 import { createToken } from "../../utils/auth";

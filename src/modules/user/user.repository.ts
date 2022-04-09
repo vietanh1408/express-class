@@ -1,7 +1,7 @@
 import { UserFilter } from "interfaces/user.interface";
 import { Brackets } from "typeorm";
-import { User } from "../modules/user/user.entity";
-import { initQueryPaging } from "../extensions/queryBuilder";
+import { User } from "../../entities/user.entity";
+import { initQueryPaging } from "../../extensions/queryBuilder";
 
 export class UserRepository {
   public async getAll(filter: UserFilter): Promise<[User[], number]> {

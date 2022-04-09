@@ -5,7 +5,7 @@ import { Controller } from "interfaces/controller.interface";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { environments } from "./constants";
-import { User } from "./modules/user/user.entity";
+import { User } from "./entities/user.entity";
 
 class App {
   public app: express.Application;
