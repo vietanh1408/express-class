@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { User } from "../entities/User.entity";
+import { User } from "../modules/user/user.entity";
 import { ResponseSuccess } from "./common.interface";
 
 export interface RegisterInput {

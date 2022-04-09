@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { Controller } from "../interfaces/controller.interface";
-import { UserService } from "../services/user.service";
+import { Controller } from "../../interfaces/controller.interface";
+import { UserService } from "../../entities/user.service";
 
 class UserController implements Controller {
   public path: string = "/users";

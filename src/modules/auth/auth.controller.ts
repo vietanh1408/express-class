@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { LoginInput, RegisterInput } from "interfaces/auth.interface";
-import { AuthService } from "../services/auth.services";
-import { Controller } from "../interfaces/controller.interface";
+import { AuthService } from "./auth.services";
+import { Controller } from "../../interfaces/controller.interface";
 
 class AuthController implements Controller {
   public path: string = "/auth";
@@ -15,6 +15,7 @@ class AuthController implements Controller {
   private mapRoutes() {
     this.router.post(`${this.path}/register`, this.register);
     this.router.post(`${this.path}/login`, this.login);
+    this.router.post(`${this.path}/login-admin`, this.loginAdmin);
   }
 
   private register = async (
@@ -28,10 +29,20 @@ class AuthController implements Controller {
 
   private login = async (
     req: Request,
-    res: Response
+    res: Response,
+    next: NextFunction
   ): Promise<Response | undefined> => {
     const { username, password } = req.body as LoginInput;
-    return await this.authService.login({ username, password }, res);
+    return await this.authService.login({ username, password }, res, next);
+  };
+
+  private loginAdmin = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
+    const { username, password } = req.body as LoginInput;
+    return await this.authService.loginAdmin({ username, password }, res, next);
   };
 }
 

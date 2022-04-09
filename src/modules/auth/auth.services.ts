@@ -1,11 +1,11 @@
-import { errorMessages } from "../constants";
-import { User } from "../entities/User.entity";
-import HttpException from "../exceptions/Http.exception";
+import argon2 from "argon2";
 import { NextFunction, Response } from "express";
 import { LoginInput, RegisterInput } from "interfaces/auth.interface";
-import argon2 from "argon2";
-import { createToken } from "../utils/auth";
-import ServerErrorException from "../exceptions/ServerError.exception";
+import { errorMessages, RoleEnum } from "../../constants";
+import { User } from "../user/user.entity";
+import HttpException from "../../exceptions/Http.exception";
+import ServerErrorException from "../../exceptions/ServerError.exception";
+import { createToken } from "../../utils/auth";
 
 export class AuthService {
   public async register(
@@ -51,7 +51,8 @@ export class AuthService {
 
   public async login(
     input: LoginInput,
-    res: Response
+    res: Response,
+    next: NextFunction
   ): Promise<Response | undefined> {
     try {
       const { password, username } = input;
@@ -59,17 +60,18 @@ export class AuthService {
       const user = (await User.findOne({
         where: {
           username,
+          role: RoleEnum.Customer,
         },
       })) as User;
 
       if (!user) {
-        new HttpException(400, errorMessages.notFoundUser);
+        next(new HttpException(400, errorMessages.notFoundUser));
       }
 
       const validPassword = await argon2.verify(user.password, password);
 
       if (!validPassword) {
-        new HttpException(400, errorMessages.incorrectPassword);
+        next(new HttpException(400, errorMessages.incorrectPassword));
       }
 
       const { password: pw, ...rest } = user;
@@ -82,7 +84,46 @@ export class AuthService {
         accessToken,
       });
     } catch (error) {
-      new ServerErrorException();
+      next(new ServerErrorException());
+    }
+  }
+
+  public async loginAdmin(
+    input: LoginInput,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> {
+    try {
+      const { password, username } = input;
+
+      const user = (await User.findOne({
+        where: {
+          username,
+          role: RoleEnum.Admin,
+        },
+      })) as User;
+
+      if (!user) {
+        next(new HttpException(400, errorMessages.notFoundUser));
+      }
+
+      const validPassword = await argon2.verify(user.password, password);
+
+      if (!validPassword) {
+        next(new HttpException(400, errorMessages.incorrectPassword));
+      }
+
+      const { password: pw, ...rest } = user;
+
+      const accessToken = createToken("accessToken", user);
+
+      return res.status(200).json({
+        success: true,
+        user: rest,
+        accessToken,
+      });
+    } catch (error) {
+      next(new ServerErrorException());
     }
   }
 }

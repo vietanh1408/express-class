@@ -1,6 +1,6 @@
 import { UserFilter } from "interfaces/user.interface";
 import { Brackets } from "typeorm";
-import { User } from "../entities/User.entity";
+import { User } from "../modules/user/user.entity";
 import { initQueryPaging } from "../extensions/queryBuilder";
 
 export class UserRepository {

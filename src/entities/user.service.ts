@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserFilter } from "interfaces/user.interface";
 import { UserRepository } from "../repositories/User.repository";
 import { errorMessages } from "../constants";
-import { User } from "../entities/User.entity";
+import { User } from "../modules/user/user.entity";
 import HttpException from "../exceptions/Http.exception";
 import ServerErrorException from "../exceptions/ServerError.exception";
 
