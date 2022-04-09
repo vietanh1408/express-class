@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { Controller } from "../interfaces/controller.interface";
-import { UserService } from "../services/User.service";
+import { UserService } from "../services/user.service";
 
 class UserController implements Controller {
   public path: string = "/users";
@@ -17,7 +17,7 @@ class UserController implements Controller {
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
-    return await this.userService.getAll(req.body, res, next);
+    return await this.userService.getAll(req, res, next);
   };
 
   public getOne = async (req: Request, res: Response, next: NextFunction) => {

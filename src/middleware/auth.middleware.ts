@@ -1,4 +1,4 @@
-import { environments } from "constants/environments";
+import { environments } from "../constants";
 import { NextFunction } from "express";
 import { Secret, verify } from "jsonwebtoken";
 import AuthorizationException from "../exceptions/Authorization.exception";

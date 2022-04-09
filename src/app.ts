@@ -4,7 +4,7 @@ import express from "express";
 import { Controller } from "interfaces/controller.interface";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { environments } from "./constants/environments";
+import { environments } from "./constants";
 import { User } from "./entities/User.entity";
 
 class App {
@@ -23,7 +23,7 @@ class App {
       database: "auth-tutorial",
       username: environments.DATABASE_USERNAME,
       password: environments.DATABASE_PASSWORD,
-      logging: false,
+      logging: true,
       synchronize: true,
       entities: [User],
     });

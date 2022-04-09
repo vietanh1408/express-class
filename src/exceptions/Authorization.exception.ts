@@ -1,4 +1,4 @@
-import { errorMessages } from "constants/errorMessages";
+import { errorMessages } from "../constants";
 import HttpException from "./Http.exception";
 
 class AuthorizationException extends HttpException {
