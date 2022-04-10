@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserCreateInput, UserFilter } from "interfaces/user.interface";
+import { UserInput, UserFilter } from "interfaces/user.interface";
 import { UserRepository } from "./user.repository";
 import { errorMessages } from "../../constants";
 import { User } from "../../entities/user.entity";
@@ -12,8 +12,7 @@ export class UserService {
 
   public async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const filter = req.query as UserFilter;
-
+      const filter: UserFilter = req.query ?? {};
       const [users, total] = await this.userRepo.getAll(filter);
 
       const userWithoutPassword = users.map((user) => {
@@ -54,7 +53,7 @@ export class UserService {
 
   public async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password, username, role } = req.body as UserCreateInput;
+      const { email, password, username, role } = req.body as UserInput;
 
       const existedUsers = await this.userRepo.getAll({
         keyword: username,
@@ -76,6 +75,35 @@ export class UserService {
       await newUser.save();
 
       const { password: pw, ...rest } = newUser;
+
+      return res.status(301).json({
+        success: true,
+        user: rest,
+      });
+    } catch (err) {
+      next(new ServerErrorException());
+    }
+  }
+
+  public async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id, ...input } = req.body as UserInput;
+
+      console.log("input: ", input);
+
+      const existedUsers = await User.findOneBy({ id });
+
+      if (!existedUsers) {
+        next(new HttpException(404, errorMessages.notFoundUser));
+      }
+
+      const updatedUser = await User.save({
+        id,
+        ...existedUsers,
+        ...input,
+      });
+
+      const { password, ...rest } = updatedUser;
 
       return res.status(301).json({
         success: true,

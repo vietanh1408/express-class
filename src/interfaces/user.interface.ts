@@ -6,7 +6,8 @@ export interface UserFilter extends PagingFilter {
   role?: RoleEnum;
 }
 
-export interface UserCreateInput {
+export interface UserInput {
+  id: string;
   username: string;
   email: string;
   password: string;

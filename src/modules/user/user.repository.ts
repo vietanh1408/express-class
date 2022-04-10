@@ -23,7 +23,7 @@ export class UserRepository {
       );
     }
 
-    if (role !== null || role !== undefined) {
+    if (role !== null && role !== undefined) {
       queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = (:...role)`, {
         role,
       });

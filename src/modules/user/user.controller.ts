@@ -15,6 +15,7 @@ class UserController implements Controller {
     this.router.get(this.path, this.getAll);
     this.router.get(`${this.path}/:id`, this.getOne);
     this.router.post(`${this.path}/create`, this.create);
+    this.router.put(`${this.path}/update`, this.update);
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,6 +29,10 @@ class UserController implements Controller {
 
   public create = async (req: Request, res: Response, next: NextFunction) => {
     return await this.userService.create(req, res, next);
+  };
+
+  public update = async (req: Request, res: Response, next: NextFunction) => {
+    return await this.userService.update(req, res, next);
   };
 }
 
