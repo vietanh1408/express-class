@@ -3,4 +3,5 @@ export const errorMessages = {
   exitedUser: "Người dùng đã tồn tại",
   notFoundUser: "Người dùng không tồn tại",
   incorrectPassword: "Mật khẩu không đúng",
+  somethingWentWrong: "Có lỗi :( Vui lòng thử lại",
 };

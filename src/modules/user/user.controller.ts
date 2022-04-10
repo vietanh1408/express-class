@@ -14,6 +14,7 @@ class UserController implements Controller {
   private mapRoutes() {
     this.router.get(this.path, this.getAll);
     this.router.get(`${this.path}/:id`, this.getOne);
+    this.router.post(`${this.path}/create`, this.create);
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +24,10 @@ class UserController implements Controller {
   public getOne = async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
     return await this.userService.getOne(id, res, next);
+  };
+
+  public create = async (req: Request, res: Response, next: NextFunction) => {
+    return await this.userService.create(req, res, next);
   };
 }
 

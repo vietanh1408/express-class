@@ -5,7 +5,7 @@ import { initQueryPaging } from "../../extensions/queryBuilder";
 
 export class UserRepository {
   public async getAll(filter: UserFilter): Promise<[User[], number]> {
-    const { keyword, limit, page, direction, field } = filter;
+    const { keyword, role, limit, page, direction, field } = filter;
 
     const alias = "u";
 
@@ -16,9 +16,17 @@ export class UserRepository {
         new Brackets((k) => {
           k.where(`LOWER(${alias}.USER_NAME) LIKE :keyword`, {
             keyword: `%${keyword.toLocaleLowerCase()}%`,
+          }).orWhere(`LOWER(${alias}.EMAIL) LIKE :keyword`, {
+            keyword: `%${keyword.toLocaleLowerCase()}%`,
           });
         })
       );
+    }
+
+    if (role !== null || role !== undefined) {
+      queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = (:...role)`, {
+        role,
+      });
     }
 
     queryBuilder = initQueryPaging({

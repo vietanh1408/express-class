@@ -1,3 +1,4 @@
+import { errorMiddleware } from "./middleware/error.middleware";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -15,6 +16,7 @@ class App {
     this.connectDatabase();
     this.applyMiddleware();
     this.applyController(controllers);
+    this.errorHandling();
   }
 
   private async connectDatabase() {
@@ -40,6 +42,10 @@ class App {
     controllers.forEach((controller) => {
       this.app.use("/api", controller.router);
     });
+  }
+
+  private errorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   public listen() {
