@@ -89,8 +89,6 @@ export class UserService {
     try {
       const { id, ...input } = req.body as UserInput;
 
-      console.log("input: ", input);
-
       const existedUsers = await User.findOneBy({ id });
 
       if (!existedUsers) {
@@ -110,6 +108,18 @@ export class UserService {
         user: rest,
       });
     } catch (err) {
+      next(new ServerErrorException());
+    }
+  }
+
+  public async delete(id: string, res: Response, next: NextFunction) {
+    try {
+      await User.delete({ id });
+
+      return res.status(200).json({
+        success: true,
+      });
+    } catch (error) {
       next(new ServerErrorException());
     }
   }

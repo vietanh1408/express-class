@@ -45,7 +45,7 @@ export class AuthService {
         accessToken,
       });
     } catch (error) {
-      new ServerErrorException();
+      next(new ServerErrorException());
     }
   }
 

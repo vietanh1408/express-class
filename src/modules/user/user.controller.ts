@@ -16,6 +16,7 @@ class UserController implements Controller {
     this.router.get(`${this.path}/:id`, this.getOne);
     this.router.post(`${this.path}/create`, this.create);
     this.router.put(`${this.path}/update`, this.update);
+    this.router.delete(`${this.path}/:id`, this.delete);
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +34,11 @@ class UserController implements Controller {
 
   public update = async (req: Request, res: Response, next: NextFunction) => {
     return await this.userService.update(req, res, next);
+  };
+
+  public delete = async (req: Request, res: Response, next: NextFunction) => {
+    const id: string = req.params.id;
+    return await this.userService.delete(id, res, next);
   };
 }
 

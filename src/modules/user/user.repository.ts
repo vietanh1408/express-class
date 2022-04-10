@@ -24,9 +24,7 @@ export class UserRepository {
     }
 
     if (role !== null && role !== undefined) {
-      queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = (:...role)`, {
-        role,
-      });
+      queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = ${role}`);
     }
 
     queryBuilder = initQueryPaging({
@@ -38,6 +36,10 @@ export class UserRepository {
       offset: page,
     });
 
-    return await queryBuilder.getManyAndCount();
+    try {
+      return await queryBuilder.getManyAndCount();
+    } catch (e) {
+      throw e;
+    }
   }
 }

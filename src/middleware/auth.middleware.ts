@@ -10,7 +10,7 @@ export const verifyAuth = (context: Context, next: NextFunction) => {
     const accessToken = authHeader && authHeader.split(" ")[1];
 
     if (!accessToken) {
-      throw new AuthorizationException();
+      next(new AuthorizationException());
     }
 
     const decodedToken = verify(
@@ -22,6 +22,6 @@ export const verifyAuth = (context: Context, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    new AuthorizationException();
+    next(new AuthorizationException());
   }
 };
