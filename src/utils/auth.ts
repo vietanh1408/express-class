@@ -6,7 +6,7 @@ export const createToken = (
   user: User
 ): string => {
   return sign(
-    { userId: user.id },
+    { userId: user.id, role: user.role },
     type === "accessToken"
       ? (process.env.SECRET_TOKEN as Secret)
       : (process.env.REFRESH_TOKEN as Secret),

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
+import { verifyAdmin, verifyAuth } from "../../middleware/auth.middleware";
 import { Controller } from "../../interfaces/controller.interface";
 import { UserService } from "./user.service";
 
@@ -12,11 +13,11 @@ class UserController implements Controller {
   }
 
   private mapRoutes() {
-    this.router.get(this.path, this.getAll);
+    this.router.get(this.path, verifyAdmin, this.getAll);
     this.router.get(`${this.path}/:id`, this.getOne);
-    this.router.post(`${this.path}/create`, this.create);
-    this.router.put(`${this.path}/update`, this.update);
-    this.router.delete(`${this.path}/:id`, this.delete);
+    this.router.post(`${this.path}/create`, verifyAdmin, this.create);
+    this.router.put(`${this.path}/update`, verifyAdmin, this.update);
+    this.router.delete(`${this.path}/:id`, verifyAdmin, this.delete);
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
