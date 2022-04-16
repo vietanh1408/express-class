@@ -1,63 +1,63 @@
-import { Product } from "../../entities/product.entity";
-import { NextFunction, Request, Response } from "express";
-import { ProductFilter, ProductInput } from "interfaces/product.interface";
-import { errorMessages } from "../../constants";
-import HttpException from "../../exceptions/Http.exception";
-import ServerErrorException from "../../exceptions/ServerError.exception";
-import { ProductRepository } from "./product.repository";
+import { NextFunction, Request, Response } from 'express'
+import { ProductFilter, ProductInput } from 'interfaces/product.interface'
+import { errorMessages } from '../../constants'
+import { Product } from '../../entities/product.entity'
+import HttpException from '../../exceptions/Http.exception'
+import ServerErrorException from '../../exceptions/ServerError.exception'
+import { ProductRepository } from './product.repository'
 
 export class ProductService {
-  private productRepo = new ProductRepository();
+  private productRepo = new ProductRepository()
 
   public async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const filter: ProductFilter = req.query ?? {};
-      const [products, total] = await this.productRepo.getAll(filter);
+      const filter: ProductFilter = req.query ?? {}
+      const [products, total] = await this.productRepo.getAll(filter)
 
       return res.status(200).json({
         success: true,
         products,
-        total,
-      });
+        total
+      })
     } catch (error) {
-      next(new ServerErrorException());
+      next(new ServerErrorException())
     }
   }
 
   public async getOne(id: string, res: Response, next: NextFunction) {
     try {
       const product = await Product.findOneBy({
-        id,
-      });
+        id
+      })
 
       if (!product) {
-        next(new HttpException(404, errorMessages.notFoundProduct));
+        next(new HttpException(404, errorMessages.notFoundProduct))
       }
 
       return res.status(200).json({
         success: true,
-        product,
-      });
+        product
+      })
     } catch (error) {
-      next(new ServerErrorException());
+      next(new ServerErrorException())
     }
   }
 
   public async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, categoryId, description, image, price } =
-        req.body as ProductInput;
+        req.body as ProductInput
 
       if (!categoryId) {
-        next(new HttpException(404, errorMessages.notFoundCategory));
+        next(new HttpException(404, errorMessages.notFoundCategory))
       }
 
       const existedProducts = await this.productRepo.getAll({
-        keyword: name,
-      });
+        keyword: name
+      })
 
       if (existedProducts[1] > 0) {
-        next(new HttpException(404, errorMessages.existedProduct));
+        next(new HttpException(404, errorMessages.existedProduct))
       }
 
       const newProduct = Product.create({
@@ -65,54 +65,54 @@ export class ProductService {
         description,
         price,
         image,
-        categoryId,
-      });
+        categoryId
+      })
 
-      await newProduct.save();
+      await newProduct.save()
 
       return res.status(301).json({
         success: true,
-        product: newProduct,
-      });
+        product: newProduct
+      })
     } catch (err) {
-      next(new ServerErrorException());
+      next(new ServerErrorException())
     }
   }
 
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id, ...input } = req.body as ProductInput;
+      const { id, ...input } = req.body as ProductInput
 
-      const existedProduct = await Product.findOneBy({ id });
+      const existedProduct = await Product.findOneBy({ id })
 
       if (!existedProduct) {
-        next(new HttpException(404, errorMessages.notFoundProduct));
+        next(new HttpException(404, errorMessages.notFoundProduct))
       }
 
       const updatedProduct = await Product.save({
         id,
         ...existedProduct,
-        ...input,
-      });
+        ...input
+      })
 
       return res.status(301).json({
         success: true,
-        product: updatedProduct,
-      });
+        product: updatedProduct
+      })
     } catch (err) {
-      next(new ServerErrorException());
+      next(new ServerErrorException())
     }
   }
 
   public async delete(id: string, res: Response, next: NextFunction) {
     try {
-      await Product.delete({ id });
+      await Product.delete({ id })
 
       return res.status(200).json({
-        success: true,
-      });
+        success: true
+      })
     } catch (error) {
-      next(new ServerErrorException());
+      next(new ServerErrorException())
     }
   }
 }

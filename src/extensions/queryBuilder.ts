@@ -1,12 +1,12 @@
-import { DirectionEnum, PAGE_INDEX, PAGE_SIZE } from "../constants";
+import { DirectionEnum, PAGE_INDEX, PAGE_SIZE } from '../constants'
 type QueryPagingType = {
-  query: any;
-  alias: string;
-  field: string;
-  direction: DirectionEnum;
-  limit?: number;
-  offset?: number;
-};
+  query: any
+  alias: string
+  field: string
+  direction: DirectionEnum
+  limit?: number
+  offset?: number
+}
 
 export const initQueryPaging = ({
   query,
@@ -14,15 +14,15 @@ export const initQueryPaging = ({
   field,
   direction,
   limit,
-  offset,
+  offset
 }: QueryPagingType) => {
   query = query.orderBy(
-    `${alias}.${field ?? "CREATED_AT"}`,
+    `${alias}.${field ?? 'CREATED_AT'}`,
     direction ?? DirectionEnum.ASC
-  );
+  )
 
-  query = query.limit(limit || PAGE_SIZE);
-  query = query.offset(offset || PAGE_INDEX);
+  query = query.limit(limit || PAGE_SIZE)
+  query = query.offset(offset || PAGE_INDEX)
 
-  return query;
-};
+  return query
+}

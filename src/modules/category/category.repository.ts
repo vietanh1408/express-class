@@ -1,24 +1,24 @@
-import { CategoryFilter } from "interfaces/category.interface";
-import { Brackets } from "typeorm";
-import { Category } from "../../entities/category.entity";
-import { initQueryPaging } from "../../extensions/queryBuilder";
+import { CategoryFilter } from 'interfaces/category.interface'
+import { Brackets } from 'typeorm'
+import { Category } from '../../entities/category.entity'
+import { initQueryPaging } from '../../extensions/queryBuilder'
 
 export class CategoryRepository {
   public async getAll(filter: CategoryFilter): Promise<[Category[], number]> {
-    const { keyword, limit, page, direction, field } = filter;
+    const { keyword, limit, page, direction, field } = filter
 
-    const alias = "p";
+    const alias = 'c'
 
-    let queryBuilder = Category.createQueryBuilder(alias);
+    let queryBuilder = Category.createQueryBuilder(alias)
 
     if (keyword) {
       queryBuilder = queryBuilder.andWhere(
         new Brackets((k) => {
           k.where(`LOWER(${alias}.NAME) LIKE :keyword`, {
-            keyword: `%${keyword.toLocaleLowerCase()}%`,
-          });
+            keyword: `%${keyword.toLocaleLowerCase()}%`
+          })
         })
-      );
+      )
     }
 
     queryBuilder = initQueryPaging({
@@ -27,13 +27,13 @@ export class CategoryRepository {
       field,
       direction,
       limit,
-      offset: page,
-    });
+      offset: page
+    })
 
     try {
-      return await queryBuilder.getManyAndCount();
+      return await queryBuilder.getManyAndCount()
     } catch (e) {
-      throw e;
+      throw e
     }
   }
 }

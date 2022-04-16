@@ -1,26 +1,26 @@
 import {
+  BaseEntity as TypeORMEntity,
   BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
-  PrimaryGeneratedColumn,
-  BaseEntity as TypeORMEntity,
-} from "typeorm";
+  PrimaryGeneratedColumn
+} from 'typeorm'
 
 export class BaseEntity extends TypeORMEntity {
-  @PrimaryGeneratedColumn("uuid", { name: "ID" })
-  id!: string;
+  @PrimaryGeneratedColumn('uuid', { name: 'ID' })
+  id!: string
 
-  @CreateDateColumn({ name: "CREATED_AT", type: "timestamp" })
-  createdAt!: Date;
+  @CreateDateColumn({ name: 'CREATED_AT', type: 'timestamp' })
+  createdAt!: Date
 
-  @CreateDateColumn({ name: "UPDATED_AT", type: "timestamp" })
-  updatedAt!: Date;
+  @CreateDateColumn({ name: 'UPDATED_AT', type: 'timestamp' })
+  updatedAt!: Date
 
-  @DeleteDateColumn({ name: "DELETED_AT", type: "timestamp" })
-  deletedAt!: Date;
+  @DeleteDateColumn({ name: 'DELETED_AT', type: 'timestamp' })
+  deletedAt!: Date
 
   @BeforeInsert()
   async setCreatedAt(): Promise<void> {
-    this.createdAt = new Date();
+    this.createdAt = new Date()
   }
 }

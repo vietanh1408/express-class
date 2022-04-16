@@ -1,6 +1,6 @@
-import { errorMessages } from "./../constants/errorMessages";
-import { NextFunction, Request, Response } from "express";
-import HttpException from "../exceptions/Http.exception";
+import { NextFunction, Request, Response } from 'express'
+import HttpException from '../exceptions/Http.exception'
+import { errorMessages } from './../constants/errorMessages'
 
 export const errorMiddleware = (
   error: HttpException,
@@ -8,11 +8,11 @@ export const errorMiddleware = (
   response: Response,
   next: NextFunction
 ) => {
-  const status = error.status || 500;
-  const message = error.message || errorMessages.somethingWentWrong;
+  const status = error.status || 500
+  const message = error.message || errorMessages.somethingWentWrong
 
   response.status(status).json({
     message,
-    status,
-  });
-};
+    status
+  })
+}

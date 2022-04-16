@@ -1,4 +1,5 @@
-require("dotenv").config();
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config()
 
 export const environments = {
   PORT: process.env.PORT || 4000,
@@ -8,5 +9,5 @@ export const environments = {
   DATABASE_HOST: process.env.DATABASE_HOST,
   DATABASE_PORT: process.env.DATABASE_PORT,
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
-  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
-};
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET
+}

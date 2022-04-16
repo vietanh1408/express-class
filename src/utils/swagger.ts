@@ -1,13 +1,13 @@
 export const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: "Express Class API",
-      description: "This is description",
+      title: 'Express Class API',
+      description: 'This is description',
       contact: {
-        name: "VietAnh1408",
+        name: 'VietAnh1408'
       },
-      servers: ["http://localhost:4000"],
-    },
+      servers: ['http://localhost:4000']
+    }
   },
-  apis: ["app.ts"],
-};
+  apis: ['app.ts']
+}

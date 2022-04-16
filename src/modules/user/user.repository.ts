@@ -1,30 +1,30 @@
-import { UserFilter } from "interfaces/user.interface";
-import { Brackets } from "typeorm";
-import { User } from "../../entities/user.entity";
-import { initQueryPaging } from "../../extensions/queryBuilder";
+import { UserFilter } from 'interfaces/user.interface'
+import { Brackets } from 'typeorm'
+import { User } from '../../entities/user.entity'
+import { initQueryPaging } from '../../extensions/queryBuilder'
 
 export class UserRepository {
   public async getAll(filter: UserFilter): Promise<[User[], number]> {
-    const { keyword, role, limit, page, direction, field } = filter;
+    const { keyword, role, limit, page, direction, field } = filter
 
-    const alias = "u";
+    const alias = 'u'
 
-    let queryBuilder = User.createQueryBuilder(alias);
+    let queryBuilder = User.createQueryBuilder(alias)
 
     if (keyword) {
       queryBuilder = queryBuilder.andWhere(
         new Brackets((k) => {
           k.where(`LOWER(${alias}.USER_NAME) LIKE :keyword`, {
-            keyword: `%${keyword.toLocaleLowerCase()}%`,
+            keyword: `%${keyword.toLocaleLowerCase()}%`
           }).orWhere(`LOWER(${alias}.EMAIL) LIKE :keyword`, {
-            keyword: `%${keyword.toLocaleLowerCase()}%`,
-          });
+            keyword: `%${keyword.toLocaleLowerCase()}%`
+          })
         })
-      );
+      )
     }
 
     if (role !== null && role !== undefined) {
-      queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = ${role}`);
+      queryBuilder = queryBuilder.andWhere(`${alias}.ROLE = ${role}`)
     }
 
     queryBuilder = initQueryPaging({
@@ -33,13 +33,13 @@ export class UserRepository {
       field,
       direction,
       limit,
-      offset: page,
-    });
+      offset: page
+    })
 
     try {
-      return await queryBuilder.getManyAndCount();
+      return await queryBuilder.getManyAndCount()
     } catch (e) {
-      throw e;
+      throw e
     }
   }
 }

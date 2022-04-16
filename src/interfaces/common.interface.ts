@@ -1,22 +1,22 @@
-import { DirectionEnum } from "./../constants";
+import { DirectionEnum } from './../constants'
 export interface ResponseSuccess {
-  success: boolean;
-  message?: string;
+  success: boolean
+  message?: string
 }
 
 export interface ResponseError {
-  success: boolean;
-  message?: string;
+  success: boolean
+  message?: string
 }
 
 export interface PagingFilter {
-  page?: number;
-  limit?: number;
-  field?: string;
-  direction?: DirectionEnum;
+  page?: number
+  limit?: number
+  field?: string
+  direction?: DirectionEnum
 }
 
 export interface TokenList {
-  refreshToken?: string;
-  accessToken?: string;
+  refreshToken?: string
+  accessToken?: string
 }

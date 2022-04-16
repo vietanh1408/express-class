@@ -1,16 +1,15 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import { entities } from './entities'
 import express from 'express'
 import { Controller } from 'interfaces/controller.interface'
 import 'reflect-metadata'
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 import { createConnection } from 'typeorm'
 import { environments } from './constants'
+import { entities } from './entities'
 import { errorMiddleware } from './middleware/error.middleware'
 import { swaggerOptions } from './utils/swagger'
-
-import swaggerUi from 'swagger-ui-express'
-import swaggerJsDoc from 'swagger-jsdoc'
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
