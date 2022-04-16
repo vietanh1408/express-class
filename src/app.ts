@@ -1,16 +1,15 @@
 import bodyParser from "body-parser";
 import cors from "cors";
+import { entities } from "./entities";
 import express from "express";
 import { Controller } from "interfaces/controller.interface";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { swaggerOptions } from "utils/swagger";
 import { environments } from "./constants";
-import { User } from "./entities/user.entity";
 import { errorMiddleware } from "./middleware/error.middleware";
+import { swaggerOptions } from "./utils/swagger";
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 class App {
@@ -28,12 +27,16 @@ class App {
   private async connectDatabase() {
     await createConnection({
       type: "postgres",
-      database: "auth-tutorial",
+      database: environments.DATABASE,
       username: environments.DATABASE_USERNAME,
       password: environments.DATABASE_PASSWORD,
+      host: environments.DATABASE_HOST,
       logging: true,
       synchronize: true,
-      entities: [User],
+      entities,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     });
   }
 
