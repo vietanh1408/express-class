@@ -4,7 +4,7 @@ import { verifyAdmin, verifyAuth } from "../../middleware/auth.middleware";
 import { ProductService } from "./product.service";
 
 class ProductController implements Controller {
-  public path: string = "/products";
+  public path = "/products";
   public router = Router();
   public productService = new ProductService();
 

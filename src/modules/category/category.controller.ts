@@ -3,7 +3,7 @@ import { Controller } from "interfaces/controller.interface";
 import { CategoryService } from "./category.service";
 
 class CategoryController implements Controller {
-  public path: string = "/categories";
+  public path = "/categories";
   public router = Router();
   public categoryService = new CategoryService();
 

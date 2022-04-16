@@ -1,14 +1,14 @@
-import { Column, Entity, OneToOne } from "typeorm";
-import { BaseEntity } from "../common/baseEntity";
+import { Column, Entity } from 'typeorm'
+import { BaseEntity } from '../common/baseEntity'
 
 @Entity()
 export class Category extends BaseEntity {
-  @Column({ unique: true, name: "NAME" })
-  name!: string;
+  @Column({ unique: true, name: 'NAME' })
+  name!: string
 
-  @Column({ name: "IMAGE", default: null })
-  image: string;
+  @Column({ name: 'IMAGE', default: null })
+  image: string
 
-  @Column({ name: "DESCRIPTION", default: null })
-  description: string;
+  @Column({ name: 'DESCRIPTION', default: null })
+  description: string
 }

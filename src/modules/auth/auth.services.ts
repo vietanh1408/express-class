@@ -156,7 +156,7 @@ export class AuthService {
       try {
         const decodedToken = (await verify(
           refreshTokenFromClient,
-          environments.REFRESH_TOKEN as Secret
+          environments.REFRESH_TOKEN_SECRET as Secret
         )) as UserAuthPayload;
 
         context.user = decodedToken;

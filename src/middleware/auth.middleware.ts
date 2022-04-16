@@ -22,7 +22,7 @@ export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
 
     const decodedToken = verify(
       accessToken,
-      environments.SECRET_TOKEN as Secret
+      environments.ACCESS_TOKEN_SECRET as Secret
     ) as UserAuthPayload;
 
     context.user = decodedToken;
@@ -54,7 +54,7 @@ export const verifyAdmin = (
 
     const decodedToken = verify(
       accessToken,
-      environments.SECRET_TOKEN as Secret
+      environments.ACCESS_TOKEN_SECRET as Secret
     ) as UserAuthPayload;
 
     context.user = decodedToken;

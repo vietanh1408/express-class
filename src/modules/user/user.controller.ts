@@ -4,7 +4,7 @@ import { Controller } from "../../interfaces/controller.interface";
 import { UserService } from "./user.service";
 
 class UserController implements Controller {
-  public path: string = "/users";
+  public path = "/users";
   public router = Router();
   public userService = new UserService();
 

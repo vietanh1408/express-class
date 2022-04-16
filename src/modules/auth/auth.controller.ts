@@ -4,7 +4,7 @@ import { AuthService } from "./auth.services";
 import { Controller } from "../../interfaces/controller.interface";
 
 class AuthController implements Controller {
-  public path: string = "/auth";
+  public path = "/auth";
   public router = Router();
   public authService = new AuthService();
 
