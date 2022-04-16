@@ -1,4 +1,3 @@
-import { errorMiddleware } from "./middleware/error.middleware";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
@@ -7,7 +6,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { environments } from "./constants";
 import { User } from "./entities/user.entity";
-
+import { errorMiddleware } from "./middleware/error.middleware";
 class App {
   public app: express.Application;
 

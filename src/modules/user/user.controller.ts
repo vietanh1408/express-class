@@ -13,7 +13,7 @@ class UserController implements Controller {
   }
 
   private mapRoutes() {
-    this.router.get(this.path, verifyAdmin, this.getAll);
+    this.router.get(this.path, verifyAuth, this.getAll);
     this.router.get(`${this.path}/:id`, this.getOne);
     this.router.post(`${this.path}/create`, verifyAdmin, this.create);
     this.router.put(`${this.path}/update`, verifyAdmin, this.update);

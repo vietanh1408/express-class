@@ -15,3 +15,8 @@ export interface PagingFilter {
   field?: string;
   direction?: DirectionEnum;
 }
+
+export interface TokenList {
+  refreshToken?: string;
+  accessToken?: string;
+}

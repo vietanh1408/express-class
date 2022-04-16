@@ -1,12 +1,17 @@
 import argon2 from "argon2";
-import { NextFunction, Response } from "express";
+import AuthorizationException from "../../exceptions/Authorization.exception";
+import { NextFunction, Request, Response } from "express";
 import { LoginInput, RegisterInput } from "interfaces/auth.interface";
-import { errorMessages, RoleEnum } from "../../constants";
+import { TokenList } from "interfaces/common.interface";
+import { Context, UserAuthPayload } from "interfaces/context.interface";
+import { Secret, verify } from "jsonwebtoken";
+import { environments, errorMessages, RoleEnum } from "../../constants";
 import { User } from "../../entities/user.entity";
 import HttpException from "../../exceptions/Http.exception";
 import ServerErrorException from "../../exceptions/ServerError.exception";
 import { createToken } from "../../utils/auth";
 
+export const tokenList: TokenList = {};
 export class AuthService {
   public async register(
     input: RegisterInput,
@@ -78,10 +83,15 @@ export class AuthService {
 
       const accessToken = createToken("accessToken", user);
 
+      const refreshToken = createToken("refreshToken", user);
+
+      tokenList[refreshToken] = { accessToken, refreshToken };
+
       return res.status(200).json({
         success: true,
         user: rest,
         accessToken,
+        refreshToken,
       });
     } catch (error) {
       next(new ServerErrorException());
@@ -124,6 +134,49 @@ export class AuthService {
       });
     } catch (error) {
       next(new ServerErrorException());
+    }
+  }
+
+  public async refreshToken(req: Request, res: Response, next: NextFunction) {
+    const refreshTokenFromClient: string = req.body.refreshToken;
+
+    const context: Context = {
+      req,
+      res,
+      user: null,
+    };
+
+    console.log("tokenList: ", tokenList);
+
+    if (refreshTokenFromClient && tokenList[refreshTokenFromClient]) {
+      try {
+        const decodedToken = (await verify(
+          refreshTokenFromClient,
+          environments.REFRESH_TOKEN as Secret
+        )) as UserAuthPayload;
+
+        context.user = decodedToken;
+        const user = await User.findOneBy({
+          id: context.user.userId.toString(),
+        });
+
+        if (!user) {
+          next(new AuthorizationException());
+        }
+
+        const accessToken = await createToken("accessToken", user);
+
+        return res.status(200).json({
+          success: true,
+          accessToken,
+        });
+      } catch (err) {
+        res.status(403).json({
+          message: errorMessages.invalidToken,
+        });
+      }
+    } else {
+      next(new HttpException(403, errorMessages.noTokenProvided));
     }
   }
 }
