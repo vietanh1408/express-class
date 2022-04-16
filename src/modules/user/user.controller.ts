@@ -13,11 +13,11 @@ class UserController implements Controller {
   }
 
   private mapRoutes() {
-    this.router.get(this.path, verifyAuth, this.getAll);
+    this.router.get(this.path, this.getAll);
     this.router.get(`${this.path}/:id`, this.getOne);
-    this.router.post(`${this.path}/create`, verifyAdmin, this.create);
-    this.router.put(`${this.path}/update`, verifyAdmin, this.update);
-    this.router.delete(`${this.path}/:id`, verifyAdmin, this.delete);
+    this.router.post(`${this.path}`, this.create);
+    this.router.put(`${this.path}`, this.update);
+    this.router.delete(`${this.path}/:id`, this.delete);
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {

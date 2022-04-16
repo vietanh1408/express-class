@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { Controller } from "interfaces/controller.interface";
-import { verifyAdmin, verifyAuth } from "../../middleware/auth.middleware";
-import { ProductService } from "./product.service";
+import { CategoryService } from "./category.service";
 
-class ProductController implements Controller {
-  public path: string = "/products";
+class CategoryController implements Controller {
+  public path: string = "/categories";
   public router = Router();
-  public productService = new ProductService();
+  public categoryService = new CategoryService();
 
   constructor() {
     this.mapRoutes();
@@ -21,26 +20,26 @@ class ProductController implements Controller {
   }
 
   public getAll = async (req: Request, res: Response, next: NextFunction) => {
-    return await this.productService.getAll(req, res, next);
+    return await this.categoryService.getAll(req, res, next);
   };
 
   public getOne = async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
-    return await this.productService.getOne(id, res, next);
+    return await this.categoryService.getOne(id, res, next);
   };
 
   public create = async (req: Request, res: Response, next: NextFunction) => {
-    return await this.productService.create(req, res, next);
+    return await this.categoryService.create(req, res, next);
   };
 
   public update = async (req: Request, res: Response, next: NextFunction) => {
-    return await this.productService.update(req, res, next);
+    return await this.categoryService.update(req, res, next);
   };
 
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id;
-    return await this.productService.delete(id, res, next);
+    return await this.categoryService.delete(id, res, next);
   };
 }
 
-export default ProductController;
+export default CategoryController;

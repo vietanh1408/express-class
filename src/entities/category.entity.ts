@@ -6,6 +6,9 @@ export class Category extends BaseEntity {
   @Column({ unique: true, name: "NAME" })
   name!: string;
 
-  @Column({ name: "IMAGE" })
-  image!: string;
+  @Column({ name: "IMAGE", default: null })
+  image: string;
+
+  @Column({ name: "DESCRIPTION", default: null })
+  description: string;
 }

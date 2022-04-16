@@ -14,12 +14,16 @@
     "noLib": false,
     "noImplicitAny": false,
     "outDir": "./dist",
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "typeRoots": ["node_modules/@types", "types"],
     "skipLibCheck": true,
     "types": ["node"],
     "stripInternal": true,
-    "paths": { "@/*": ["src/*"] }
+    "paths": {
+      "@/*": ["src/*"],
+      "@/interfaces/*": ["./src/interfaces/*"],
+      "@/extensions/*": ["./src/extensions/*"]
+    }
   },
   "ts-node": {
     "transpileOnly": true,

@@ -21,14 +21,14 @@ export class AuthService {
     try {
       const { username, password } = input;
 
-      const exitedUser = await User.findOne({
+      const existedUser = await User.findOne({
         where: {
           username,
         },
       });
 
-      if (exitedUser) {
-        next(new HttpException(404, errorMessages.exitedUser));
+      if (existedUser) {
+        next(new HttpException(404, errorMessages.existedUser));
       }
 
       const hashedPassword = await argon2.hash(password);

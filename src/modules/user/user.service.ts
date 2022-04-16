@@ -60,7 +60,7 @@ export class UserService {
       });
 
       if (existedUsers[1] > 0) {
-        next(new HttpException(404, errorMessages.exitedUser));
+        next(new HttpException(404, errorMessages.existedUser));
       }
 
       const hashedPassword = await argon2.hash(password);
