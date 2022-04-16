@@ -127,16 +127,22 @@ export class AuthService {
 
       const accessToken = createToken("accessToken", user);
 
+      const refreshToken = createToken("refreshToken", user);
+
+      tokenList[refreshToken] = { accessToken, refreshToken };
+
       return res.status(200).json({
         success: true,
         user: rest,
         accessToken,
+        refreshToken,
       });
     } catch (error) {
       next(new ServerErrorException());
     }
   }
 
+  // this api using after accessToken expired, client will call this api to get new accessToken and server will response new accessToken
   public async refreshToken(req: Request, res: Response, next: NextFunction) {
     const refreshTokenFromClient: string = req.body.refreshToken;
 
@@ -145,8 +151,6 @@ export class AuthService {
       res,
       user: null,
     };
-
-    console.log("tokenList: ", tokenList);
 
     if (refreshTokenFromClient && tokenList[refreshTokenFromClient]) {
       try {

@@ -4,14 +4,21 @@ import express from "express";
 import { Controller } from "interfaces/controller.interface";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
+import { swaggerOptions } from "utils/swagger";
 import { environments } from "./constants";
 import { User } from "./entities/user.entity";
 import { errorMiddleware } from "./middleware/error.middleware";
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 class App {
   public app: express.Application;
 
   constructor(controllers: Controller[]) {
     this.app = express();
+    this.applySwagger();
     this.connectDatabase();
     this.applyMiddleware();
     this.applyController(controllers);
@@ -45,6 +52,10 @@ class App {
 
   private errorHandling() {
     this.app.use(errorMiddleware);
+  }
+
+  private applySwagger() {
+    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
   }
 
   public listen() {
