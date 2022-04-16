@@ -1,7 +1,6 @@
 {
-    "name": "go-app",
+    "name": "Express_Class",
     "version": "0.0.1",
-    "description": "This is delivery app",
     "main": "server.ts",
     "scripts": {
         "start": "node dist/server.js",
@@ -24,6 +23,7 @@
         "morgan": "^1.10.0",
         "pg": "^8.7.3",
         "reflect-metadata": "^0.1.13",
+        "socket.io": "^4.4.1",
         "swagger-jsdoc": "^6.2.0",
         "swagger-ui-express": "^4.3.0",
         "typeorm": "^0.3.4"

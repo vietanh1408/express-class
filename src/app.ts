@@ -10,14 +10,30 @@ import { environments } from './constants'
 import { entities } from './entities'
 import { errorMiddleware } from './middleware/error.middleware'
 import { swaggerOptions } from './utils/swagger'
+import SocketIO from 'socket.io'
+import { Server } from 'http'
+import { SocketServer } from './socket'
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
 class App {
   public app: express.Application
 
+  private io: SocketIO.Server
+  private server: Server
+  private serverSocket: SocketServer
+
   constructor(controllers: Controller[]) {
     this.app = express()
+
+    this.io = new SocketIO.Server(this.server, {
+      cors: {
+        origin: true
+      }
+    })
+
+    this.serverSocket = new SocketServer(this.io)
+
     this.applySwagger()
     this.connectDatabase()
     this.applyMiddleware()
@@ -46,6 +62,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
     this.app.use(express.json({ limit: '50mb' }))
     this.app.use(cors())
+    this.serverSocket.initializeSocket()
   }
 
   private applyController(controllers: Controller[]) {
