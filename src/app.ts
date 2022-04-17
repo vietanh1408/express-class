@@ -1,18 +1,18 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
+import { Server } from 'http'
 import { Controller } from 'interfaces/controller.interface'
 import 'reflect-metadata'
+import SocketIO from 'socket.io'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import { createConnection } from 'typeorm'
 import { environments } from './constants'
 import { entities } from './entities'
 import { errorMiddleware } from './middleware/error.middleware'
-import { swaggerOptions } from './utils/swagger'
-import SocketIO from 'socket.io'
-import { Server } from 'http'
 import { SocketServer } from './socket'
+import { swaggerOptions } from './utils/swagger'
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
@@ -59,7 +59,7 @@ class App {
 
   private applyMiddleware() {
     this.app.use(bodyParser.json())
-    this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }))
+    this.app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
     this.app.use(express.json({ limit: '50mb' }))
     this.app.use(cors())
     this.serverSocket.initializeSocket()
