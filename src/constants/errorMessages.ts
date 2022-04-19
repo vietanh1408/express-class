@@ -9,5 +9,6 @@ export const errorMessages = {
   notFoundProduct: 'Sản phẩm không tồn tại',
   existedProduct: 'Sản phẩm đã tồn tại',
   notFoundCategory: 'Danh mục không tồn tại',
-  existedCategory: 'Danh mục đã tồn tại'
+  existedCategory: 'Danh mục đã tồn tại',
+  uploadFail: 'Không thể tải lên file'
 }

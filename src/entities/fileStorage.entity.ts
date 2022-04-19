@@ -8,4 +8,10 @@ export class FileStorage extends BaseEntity {
 
   @Column({ name: 'URL', default: null })
   url: string
+
+  @Column({ name: 'PUBLIC_ID', default: null })
+  publicId: string
+
+  @Column({ name: 'SECURE_URL', default: null })
+  secureUrl: string
 }

@@ -1,32 +1,27 @@
-import express, { Router } from 'express'
-
-import multer from 'multer'
+import { NextFunction, Request, Response, Router } from 'express'
+import { UploadService } from './upload.service'
 
 class UploadController {
   public path = '/upload'
   public router = Router()
-  public app: express.Application
 
-  public storage
+  private uploadService = new UploadService()
 
   constructor() {
-    this.app = express()
-
-    this.storage = multer.diskStorage({})
     this.mapRoutes()
-    this.initializeUpload()
-  }
-
-  private initializeUpload() {
-    this.app.use(express.static('../../storage'))
   }
 
   private mapRoutes() {
     this.router.post(this.path, this.upload)
+    this.router.delete(`${this.path}/:id`, this.remove)
   }
 
-  public upload = async () => {
-    return
+  public upload = async (req: Request, res: Response, next: NextFunction) => {
+    return this.uploadService.upload(req, res, next)
+  }
+
+  public remove = async (req: Request, res: Response, next: NextFunction) => {
+    return this.uploadService.remove(req, res, next)
   }
 }
 
