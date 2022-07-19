@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response, Router } from 'express'
+import { NextFunction, Response, Router } from 'express'
+import { RequestWithUser } from 'interfaces'
 import { Controller } from 'interfaces/controller.interface'
 import { CategoryService } from './category.service'
 
@@ -19,24 +20,44 @@ class CategoryController implements Controller {
     this.router.delete(`${this.path}/:id`, this.delete)
   }
 
-  public getAll = async (req: Request, res: Response, next: NextFunction) => {
+  public getAll = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     return await this.categoryService.getAll(req, res, next)
   }
 
-  public getOne = async (req: Request, res: Response, next: NextFunction) => {
+  public getOne = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     const id: string = req.params.id
     return await this.categoryService.getOne(id, res, next)
   }
 
-  public create = async (req: Request, res: Response, next: NextFunction) => {
+  public create = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     return await this.categoryService.create(req, res, next)
   }
 
-  public update = async (req: Request, res: Response, next: NextFunction) => {
+  public update = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     return await this.categoryService.update(req, res, next)
   }
 
-  public delete = async (req: Request, res: Response, next: NextFunction) => {
+  public delete = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     const id: string = req.params.id
     return await this.categoryService.delete(id, res, next)
   }

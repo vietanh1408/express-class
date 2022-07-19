@@ -2,7 +2,11 @@ import argon2 from 'argon2'
 import { NextFunction, Request, Response } from 'express'
 import { LoginInput, RegisterInput } from 'interfaces/auth.interface'
 import { TokenList } from 'interfaces/common.interface'
-import { Context, UserAuthPayload } from 'interfaces/context.interface'
+import {
+  Context,
+  RequestWithUser,
+  UserAuthPayload
+} from 'interfaces/context.interface'
 import { Secret, verify } from 'jsonwebtoken'
 import { environments, errorMessages, RoleEnum } from '../../constants'
 import { User } from '../../entities/user.entity'
@@ -19,16 +23,26 @@ export class AuthService {
     next: NextFunction
   ) {
     try {
-      const { username, password } = input
+      const { email, username, password } = input
 
-      const existedUser = await User.findOne({
+      const existedUsername = await User.findOne({
         where: {
           username
         }
       })
 
-      if (existedUser) {
+      if (existedUsername) {
         next(new HttpException(404, errorMessages.existedUser))
+      }
+
+      const existedEmail = await User.findOne({
+        where: {
+          email
+        }
+      })
+
+      if (existedEmail) {
+        next(new HttpException(404, errorMessages.existedEmail))
       }
 
       const hashedPassword = await argon2.hash(password)
@@ -62,12 +76,18 @@ export class AuthService {
     try {
       const { password, username } = input
 
-      const user = (await User.findOne({
+      console.log('username: ', username)
+
+      if (!username) {
+        next(new HttpException(400, errorMessages.notFoundUser))
+      }
+
+      const user: User = await User.findOne({
         where: {
           username,
           role: RoleEnum.Customer
         }
-      })) as User
+      })
 
       if (!user) {
         next(new HttpException(400, errorMessages.notFoundUser))
@@ -143,7 +163,11 @@ export class AuthService {
   }
 
   // this api using after accessToken expired, client will call this api to get new accessToken and server will response new accessToken
-  public async refreshToken(req: Request, res: Response, next: NextFunction) {
+  public async refreshToken(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
     const refreshTokenFromClient: string = req.body.refreshToken
 
     const context: Context = {

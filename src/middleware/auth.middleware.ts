@@ -2,10 +2,18 @@ import { NextFunction, Request, Response } from 'express'
 import { Secret, verify } from 'jsonwebtoken'
 import { environments } from '../constants'
 import AuthorizationException from '../exceptions/Authorization.exception'
-import { Context, UserAuthPayload } from '../interfaces/context.interface'
+import {
+  Context,
+  RequestWithUser,
+  UserAuthPayload
+} from '../interfaces/context.interface'
 import { RoleEnum } from './../constants/enum'
 
-export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
+export const verifyAuth = (
+  req: RequestWithUser,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const context: Context = {
       req,
@@ -27,6 +35,8 @@ export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
 
     context.user = decodedToken
 
+    req.user = decodedToken
+
     return next()
   } catch (error) {
     next(new AuthorizationException())
@@ -34,7 +44,7 @@ export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const verifyAdmin = (
-  req: Request,
+  req: RequestWithUser,
   res: Response,
   next: NextFunction
 ) => {

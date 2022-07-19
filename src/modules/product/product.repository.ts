@@ -8,7 +8,9 @@ export class ProductRepository {
   public async getAll(filter: ProductFilter): Promise<[Product[], number]> {
     const { keyword, limit, page, direction, field } = filter
 
-    const categoryIds = decodedStringToArray(filter.categoryIds)
+    const categoryIds = filter?.categoryIds
+      ? decodedStringToArray(filter?.categoryIds)
+      : []
 
     const alias = 'p'
 

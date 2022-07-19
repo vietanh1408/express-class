@@ -2,13 +2,15 @@ import { Request, Response } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
 
 export type UserAuthPayload = JwtPayload & {
-  userId: number
+  userId: string
   role: number
   tokenVersion: number
 }
 
 export interface Context {
-  req: Request
+  req: RequestWithUser
   res: Response
   user: UserAuthPayload | null
 }
+
+export type RequestWithUser = Request & { user: UserAuthPayload }

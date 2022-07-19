@@ -3,6 +3,7 @@ import { UploadService } from './upload.service'
 import * as cloud from 'cloudinary'
 import multer from 'multer'
 import { environments } from '../../constants/index'
+import { RequestWithUser } from 'interfaces'
 class UploadController {
   public path = '/upload'
   public router = Router()
@@ -43,19 +44,27 @@ class UploadController {
     this.router.delete(`${this.path}/:id`, this.remove)
   }
 
-  public upload = async (req: Request, res: Response, next: NextFunction) => {
+  public upload = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     return this.uploadService.upload(req, res, next)
   }
 
   public uploadMultiple = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ) => {
     return this.uploadService.uploadMultiple(req, res, next)
   }
 
-  public remove = async (req: Request, res: Response, next: NextFunction) => {
+  public remove = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     return this.uploadService.remove(req, res, next)
   }
 }

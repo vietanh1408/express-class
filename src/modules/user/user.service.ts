@@ -1,5 +1,6 @@
 import argon2 from 'argon2'
 import { NextFunction, Request, Response } from 'express'
+import { RequestWithUser } from 'interfaces'
 import { UserFilter, UserInput } from 'interfaces/user.interface'
 import { errorMessages } from '../../constants'
 import { User } from '../../entities/user.entity'
@@ -10,7 +11,7 @@ import { UserRepository } from './user.repository'
 export class UserService {
   private userRepo = new UserRepository()
 
-  public async getAll(req: Request, res: Response, next: NextFunction) {
+  public async getAll(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const filter: UserFilter = req.query ?? {}
       const [users, total] = await this.userRepo.getAll(filter)
@@ -51,7 +52,7 @@ export class UserService {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
+  public async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { email, password, username, role } = req.body as UserInput
 
@@ -85,7 +86,7 @@ export class UserService {
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction) {
+  public async update(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { id, ...input } = req.body as UserInput
 
@@ -118,6 +119,29 @@ export class UserService {
 
       return res.status(200).json({
         success: true
+      })
+    } catch (error) {
+      next(new ServerErrorException())
+    }
+  }
+
+  public async getProfile(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { userId } = req.user
+
+      const user = await User.findOneBy({ id: userId })
+
+      if (!user) {
+        next(new HttpException(404, errorMessages.notFoundUser))
+      }
+
+      return res.status(200).json({
+        success: true,
+        user
       })
     } catch (error) {
       next(new ServerErrorException())

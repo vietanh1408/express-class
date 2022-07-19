@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
+import { RequestWithUser } from 'interfaces'
 import { CategoryFilter, CategoryInput } from 'interfaces/category.interface'
 import { errorMessages } from '../../constants'
 import { Category } from '../../entities/category.entity'
@@ -9,7 +10,7 @@ import { CategoryRepository } from './category.repository'
 export class CategoryService {
   private categoryRepo = new CategoryRepository()
 
-  public async getAll(req: Request, res: Response, next: NextFunction) {
+  public async getAll(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const filter: CategoryFilter = req.query ?? {}
       const [categories, total] = await this.categoryRepo.getAll(filter)
@@ -43,7 +44,7 @@ export class CategoryService {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
+  public async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { name, description, image } = req.body as CategoryInput
 
@@ -72,7 +73,7 @@ export class CategoryService {
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction) {
+  public async update(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { id, ...input } = req.body as CategoryInput
 

@@ -4,9 +4,10 @@ import * as cloud from 'cloudinary'
 import { environments } from '../../constants/index'
 import HttpException from '../../exceptions/Http.exception'
 import { FileStorage } from '../../entities/fileStorage.entity'
+import { RequestWithUser } from 'interfaces'
 
 export class UploadService {
-  public async upload(req: Request, res: Response, next: NextFunction) {
+  public async upload(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const file = req.file
 
@@ -31,7 +32,11 @@ export class UploadService {
     }
   }
 
-  public async uploadMultiple(req: Request, res: Response, next: NextFunction) {
+  public async uploadMultiple(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const files = req.files ?? []
 
@@ -66,7 +71,7 @@ export class UploadService {
     }
   }
 
-  public async remove(req: Request, res: Response, next: NextFunction) {
+  public async remove(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const id = req.params.id
 

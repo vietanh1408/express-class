@@ -4,6 +4,7 @@ import { ResponseSuccess } from './common.interface'
 
 export interface RegisterInput {
   username: string
+  email: string
   password: string
 }
 

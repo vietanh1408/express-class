@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
+import { RequestWithUser } from 'interfaces'
 import { ProductFilter, ProductInput } from 'interfaces/product.interface'
 import { errorMessages } from '../../constants'
 import { Product } from '../../entities/product.entity'
@@ -9,7 +10,7 @@ import { ProductRepository } from './product.repository'
 export class ProductService {
   private productRepo = new ProductRepository()
 
-  public async getAll(req: Request, res: Response, next: NextFunction) {
+  public async getAll(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const filter: ProductFilter = req.query ?? {}
       const [products, total] = await this.productRepo.getAll(filter)
@@ -43,7 +44,7 @@ export class ProductService {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
+  public async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { name, categoryId, description, image, price } =
         req.body as ProductInput
@@ -79,7 +80,7 @@ export class ProductService {
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction) {
+  public async update(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const { id, ...input } = req.body as ProductInput
 
