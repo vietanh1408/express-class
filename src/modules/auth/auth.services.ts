@@ -58,7 +58,6 @@ export class AuthService {
 
       return res.status(200).json({
         success: true,
-        user: newUser,
         accessToken
       })
     } catch (error) {
@@ -73,8 +72,6 @@ export class AuthService {
   ): Promise<Response | undefined> {
     try {
       const { password, username } = input
-
-      console.log('username: ', username)
 
       if (!username) {
         next(new HttpException(400, errorMessages.notFoundUser))
@@ -105,7 +102,6 @@ export class AuthService {
 
       return res.status(200).json({
         success: true,
-        user,
         accessToken,
         refreshToken
       })
@@ -147,7 +143,6 @@ export class AuthService {
 
       return res.status(200).json({
         success: true,
-        user,
         accessToken,
         refreshToken
       })
