@@ -1,5 +1,5 @@
 import argon2 from 'argon2'
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
 import { RequestWithUser } from 'interfaces'
 import { UserFilter, UserInput } from 'interfaces/user.interface'
 import { errorMessages } from '../../constants'
@@ -16,14 +16,9 @@ export class UserService {
       const filter: UserFilter = req.query ?? {}
       const [users, total] = await this.userRepo.getAll(filter)
 
-      const userWithoutPassword = users.map((user) => {
-        const { password, ...rest } = user
-        return rest
-      })
-
       return res.status(200).json({
         success: true,
-        users: userWithoutPassword,
+        users: users,
         total
       })
     } catch (error) {
@@ -41,11 +36,9 @@ export class UserService {
         next(new HttpException(404, errorMessages.notFoundUser))
       }
 
-      const { password, ...rest } = user as User
-
       return res.status(200).json({
         success: true,
-        user: rest
+        user
       })
     } catch (error) {
       next(new ServerErrorException())
@@ -75,11 +68,9 @@ export class UserService {
 
       await newUser.save()
 
-      const { password: pw, ...rest } = newUser
-
       return res.status(301).json({
         success: true,
-        user: rest
+        user: newUser
       })
     } catch (err) {
       next(new ServerErrorException())
@@ -102,11 +93,9 @@ export class UserService {
         ...input
       })
 
-      const { password, ...rest } = updatedUser
-
       return res.status(301).json({
         success: true,
-        user: rest
+        user: updatedUser
       })
     } catch (err) {
       next(new ServerErrorException())

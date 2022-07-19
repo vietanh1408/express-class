@@ -6,7 +6,7 @@ export class User extends BaseEntity {
   @Column({ unique: true, name: 'USER_NAME' })
   username!: string
 
-  @Column({ name: 'PASSWORD' })
+  @Column({ name: 'PASSWORD', select: false })
   password!: string
 
   @Column({ name: 'EMAIL', default: null })

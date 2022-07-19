@@ -54,13 +54,11 @@ export class AuthService {
 
       await newUser.save()
 
-      const { password: pw, ...rest } = newUser
-
       const accessToken = createToken('accessToken', newUser)
 
       return res.status(200).json({
         success: true,
-        user: rest,
+        user: newUser,
         accessToken
       })
     } catch (error) {
@@ -99,8 +97,6 @@ export class AuthService {
         next(new HttpException(400, errorMessages.incorrectPassword))
       }
 
-      const { password: pw, ...rest } = user
-
       const accessToken = createToken('accessToken', user)
 
       const refreshToken = createToken('refreshToken', user)
@@ -109,7 +105,7 @@ export class AuthService {
 
       return res.status(200).json({
         success: true,
-        user: rest,
+        user,
         accessToken,
         refreshToken
       })
@@ -143,8 +139,6 @@ export class AuthService {
         next(new HttpException(400, errorMessages.incorrectPassword))
       }
 
-      const { password: pw, ...rest } = user
-
       const accessToken = createToken('accessToken', user)
 
       const refreshToken = createToken('refreshToken', user)
@@ -153,7 +147,7 @@ export class AuthService {
 
       return res.status(200).json({
         success: true,
-        user: rest,
+        user,
         accessToken,
         refreshToken
       })
