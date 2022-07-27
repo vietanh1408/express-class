@@ -1,4 +1,3 @@
-import { Category } from '../../entities/category.entity'
 import { ProductFilter } from 'interfaces/product.interface'
 import { Brackets } from 'typeorm'
 import { Product } from '../../entities/product.entity'
@@ -15,10 +14,9 @@ export class ProductRepository {
 
     const alias = 'p'
 
-    let queryBuilder = Product.createQueryBuilder(alias).leftJoinAndSelect(
-      `${alias}.category`,
-      'category'
-    )
+    let queryBuilder = Product.createQueryBuilder(alias)
+      .leftJoinAndSelect(`${alias}.category`, 'category')
+      .leftJoinAndSelect(`${alias}.image`, 'image')
 
     if (keyword) {
       queryBuilder = queryBuilder.andWhere(

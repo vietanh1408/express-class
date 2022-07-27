@@ -8,7 +8,7 @@ export interface ProductFilter extends PagingFilter {
 export interface ProductInput {
   id: string
   name: string
-  image: string
+  imageId: string
   description: string
   price: number
   categoryId: string

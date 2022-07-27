@@ -47,7 +47,7 @@ export class ProductService {
 
   public async create(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const { name, categoryId, description, image, price } =
+      const { name, categoryId, description, imageId, price } =
         req.body as ProductInput
 
       if (!categoryId) {
@@ -66,7 +66,7 @@ export class ProductService {
         name,
         description,
         price,
-        image,
+        imageId,
         categoryId
       })
 
