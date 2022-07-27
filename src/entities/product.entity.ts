@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
 import { BaseEntity } from '../common/baseEntity'
 import { Category } from './category.entity'
 
@@ -19,7 +19,7 @@ export class Product extends BaseEntity {
   @Column({ name: 'CATEGORY_ID' })
   categoryId: string
 
-  @OneToOne(() => Category, (category) => category.id)
+  @ManyToOne(() => Category, (category) => category.id)
   @JoinColumn({ name: 'CATEGORY_ID' })
   category: Category
 }
