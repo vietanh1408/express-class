@@ -6,7 +6,7 @@ import { decodedStringToArray } from '../../extensions/string'
 
 export class ProductRepository {
   public async getAll(filter: ProductFilter): Promise<[Product[], number]> {
-    const { keyword, limit, page, direction, field } = filter
+    const { keyword, limit, offset, direction, field } = filter
 
     const categoryIds = filter?.categoryIds
       ? decodedStringToArray(filter?.categoryIds)
@@ -35,13 +35,20 @@ export class ProductRepository {
       )
     }
 
+    queryBuilder.innerJoin(
+      `${alias}.CATEGORY_ID`,
+      'CATEGORY',
+      'CATEGORY.id IN (:...categoryIds)',
+      { categoryIds }
+    )
+
     queryBuilder = initQueryPaging({
       query: queryBuilder,
       alias,
       field,
       direction,
       limit,
-      offset: page
+      offset
     })
 
     try {

@@ -5,7 +5,7 @@ import { initQueryPaging } from '../../extensions/queryBuilder'
 
 export class UserRepository {
   public async getAll(filter: UserFilter): Promise<[User[], number]> {
-    const { keyword, role, limit, page, direction, field } = filter
+    const { keyword, role, limit, offset, direction, field } = filter
 
     const alias = 'u'
 
@@ -33,7 +33,7 @@ export class UserRepository {
       field,
       direction,
       limit,
-      offset: page
+      offset
     })
 
     try {

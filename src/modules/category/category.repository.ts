@@ -5,7 +5,7 @@ import { initQueryPaging } from '../../extensions/queryBuilder'
 
 export class CategoryRepository {
   public async getAll(filter: CategoryFilter): Promise<[Category[], number]> {
-    const { keyword, limit, page, direction, field } = filter
+    const { keyword, limit, offset, direction, field } = filter
 
     const alias = 'c'
 
@@ -27,7 +27,7 @@ export class CategoryRepository {
       field,
       direction,
       limit,
-      offset: page
+      offset
     })
 
     try {

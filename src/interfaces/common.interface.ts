@@ -10,7 +10,7 @@ export interface ResponseError {
 }
 
 export interface PagingFilter {
-  page?: number
+  offset?: number
   limit?: number
   field?: string
   direction?: DirectionEnum
