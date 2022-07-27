@@ -14,7 +14,7 @@ class ProductController implements Controller {
   }
 
   private mapRoutes() {
-    this.router.get(this.path, verifyAuth, this.getAll)
+    this.router.get(this.path, this.getAll)
     this.router.get(`${this.path}/:id`, this.getOne)
     this.router.post(`${this.path}`, this.create)
     this.router.put(`${this.path}`, this.update)

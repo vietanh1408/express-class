@@ -1,3 +1,4 @@
+import { Category } from '../../entities/category.entity'
 import { ProductFilter } from 'interfaces/product.interface'
 import { Brackets } from 'typeorm'
 import { Product } from '../../entities/product.entity'
@@ -14,7 +15,10 @@ export class ProductRepository {
 
     const alias = 'p'
 
-    let queryBuilder = Product.createQueryBuilder(alias)
+    let queryBuilder = Product.createQueryBuilder(alias).leftJoinAndSelect(
+      `${alias}.category`,
+      'category'
+    )
 
     if (keyword) {
       queryBuilder = queryBuilder.andWhere(
@@ -35,12 +39,7 @@ export class ProductRepository {
       )
     }
 
-    queryBuilder.innerJoin(
-      `${alias}.CATEGORY_ID`,
-      'CATEGORY',
-      'CATEGORY.id IN (:...categoryIds)',
-      { categoryIds }
-    )
+    console.log('📢[product.repository.ts:38]: queryBuilder: ', queryBuilder)
 
     queryBuilder = initQueryPaging({
       query: queryBuilder,

@@ -13,6 +13,7 @@ export class ProductService {
   public async getAll(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
       const filter: ProductFilter = req.query ?? {}
+      console.log('📢[product.service.ts:15]: filter: ', filter)
       const [products, total] = await this.productRepo.getAll(filter)
 
       return res.status(200).json({
